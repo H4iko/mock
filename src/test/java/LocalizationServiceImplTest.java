@@ -3,12 +3,6 @@ import ru.netology.entity.Country;
 import ru.netology.i18n.LocalizationServiceImpl;
 
 public class LocalizationServiceImplTest {
-    private LocalizationServiceImpl localizationService;
-
-    @BeforeEach
-    public void init() {
-        localizationService = new LocalizationServiceImpl();
-    }
 
     @BeforeAll
     public static void start() {
@@ -22,6 +16,9 @@ public class LocalizationServiceImplTest {
 
     @Test
     public void localeTest() {
+
+        LocalizationServiceImpl localizationService = new LocalizationServiceImpl();
+
         //given
         Country country = Country.RUSSIA;
         String expected = "Добро пожаловать";

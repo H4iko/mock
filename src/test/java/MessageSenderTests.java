@@ -15,28 +15,9 @@ import java.util.stream.Stream;
 
 public class MessageSenderTests {
 
-    private MessageSenderImpl messageSender;
-
     @BeforeAll
     public static void start() {
         System.out.println("Start tests");
-    }
-
-    @BeforeEach
-    public void init() {
-        GeoService geoService = Mockito.mock(GeoService.class);
-        Mockito.when(geoService.byIp(Mockito.startsWith("172.")))
-                .thenReturn(new Location("Moscow", Country.RUSSIA, null, 0));
-        Mockito.when(geoService.byIp(Mockito.startsWith("96.")))
-                .thenReturn(new Location("New York", Country.USA, null,  0));
-
-        LocalizationService localizationService = Mockito.mock(LocalizationService.class);
-        Mockito.when(localizationService.locale(Country.RUSSIA))
-                .thenReturn("Добро пожаловать");
-        Mockito.when(localizationService.locale(Country.USA))
-                .thenReturn("Wellcome");
-
-        messageSender = new MessageSenderImpl(geoService, localizationService);
     }
 
     @AfterAll
@@ -46,10 +27,23 @@ public class MessageSenderTests {
 
     @ParameterizedTest
     @MethodSource("source")
-    public void sendTest (String ip, String expected) {
+    public void sendTest(String ip, String expected) {
 
         Map<String, String> headers = new HashMap<String, String>();
         headers.put(MessageSenderImpl.IP_ADDRESS_HEADER, ip);
+        GeoService geoService = Mockito.mock(GeoService.class);
+        Mockito.when(geoService.byIp(Mockito.startsWith("172.")))
+                .thenReturn(new Location("Moscow", Country.RUSSIA, null, 0));
+        Mockito.when(geoService.byIp(Mockito.startsWith("96.")))
+                .thenReturn(new Location("New York", Country.USA, null, 0));
+
+        LocalizationService localizationService = Mockito.mock(LocalizationService.class);
+        Mockito.when(localizationService.locale(Country.RUSSIA))
+                .thenReturn("Добро пожаловать");
+        Mockito.when(localizationService.locale(Country.USA))
+                .thenReturn("Wellcome");
+
+        MessageSenderImpl messageSender = new MessageSenderImpl(geoService, localizationService);
         String result = messageSender.send(headers);
 
         Assertions.assertEquals(expected, result);
@@ -61,16 +55,16 @@ public class MessageSenderTests {
     }
 
     @org.junit.jupiter.api.Test
-    public void byCoordinatesTest () {
+    public void byCoordinatesTest() {
         //given:
-        double latitude=0, longitude=0;
+        double latitude = 0, longitude = 0;
         GeoService geo = new GeoServiceImpl();
 
         //when
         var expected = RuntimeException.class;
 
         //then
-        Assertions.assertThrows( expected, () -> geo.byCoordinates( latitude,  longitude));
+        Assertions.assertThrows(expected, () -> geo.byCoordinates(latitude, longitude));
     }
 
 }

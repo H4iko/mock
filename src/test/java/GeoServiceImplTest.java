@@ -9,13 +9,6 @@ import ru.netology.i18n.geo.GeoServiceImpl;
 import java.util.stream.Stream;
 
 public class GeoServiceImplTest {
-    private GeoServiceImpl geoService;
-
-    @BeforeEach
-    public void init() {
-        geoService = new GeoServiceImpl();
-    }
-
     @BeforeAll
     public static void start() {
         System.out.println("Start tests");
@@ -29,6 +22,7 @@ public class GeoServiceImplTest {
     @ParameterizedTest
     @MethodSource("source")
     public void byIPtest(String ip, Location expected) {
+        GeoServiceImpl geoService = new GeoServiceImpl();
         //given
 
         //when
@@ -48,21 +42,20 @@ public class GeoServiceImplTest {
                 Arguments.of("172.0.32.11", new Location("Moscow", Country.RUSSIA, "Lenina", 15)),
                 Arguments.of("96.44.183.149", new Location("New York", Country.USA, " 10th Avenue", 32)),
                 Arguments.of("172.44.183.149", new Location("Moscow", Country.RUSSIA, null, 0)),
-                Arguments.of("96.44.78.149", new Location("New York", Country.USA, null,  0)));
+                Arguments.of("96.44.78.149", new Location("New York", Country.USA, null, 0)));
     }
 
     @org.junit.jupiter.api.Test
-    public void byCoordinatesTest () {
+    public void byCoordinatesTest() {
         //given:
-        double latitude=0, longitude=0;
+        double latitude = 0, longitude = 0;
 
         //when
         var expected = RuntimeException.class;
 
         //then
-        Assertions.assertThrows( expected, () -> geoService.byCoordinates( latitude,  longitude));
+        Assertions.assertThrows(expected, () -> geoService.byCoordinates(latitude, longitude));
     }
-
 
 
 }
