@@ -9,11 +9,11 @@ import ru.netology.i18n.geo.GeoServiceImpl;
 import java.util.stream.Stream;
 
 public class GeoServiceImplTest {
-    GeoServiceImpl sut;
+    private GeoServiceImpl geoService;
 
     @BeforeEach
     public void init() {
-        sut = new GeoServiceImpl();
+        geoService = new GeoServiceImpl();
     }
 
     @BeforeAll
@@ -32,7 +32,7 @@ public class GeoServiceImplTest {
         //given
 
         //when
-        Location result = sut.byIp(ip);
+        Location result = geoService.byIp(ip);
 
         //then
         Assertions.assertEquals(expected.getCity(), result.getCity());
@@ -60,7 +60,7 @@ public class GeoServiceImplTest {
         var expected = RuntimeException.class;
 
         //then
-        Assertions.assertThrows( expected, () -> sut.byCoordinates( latitude,  longitude));
+        Assertions.assertThrows( expected, () -> geoService.byCoordinates( latitude,  longitude));
     }
 
 

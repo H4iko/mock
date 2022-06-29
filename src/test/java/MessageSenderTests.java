@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 
 public class MessageSenderTests {
 
-    static MessageSenderImpl sut;
+    private MessageSenderImpl messageSender;
 
     @BeforeAll
     public static void start() {
@@ -36,7 +36,7 @@ public class MessageSenderTests {
         Mockito.when(localizationService.locale(Country.USA))
                 .thenReturn("Wellcome");
 
-        sut = new MessageSenderImpl(geoService, localizationService);
+        messageSender = new MessageSenderImpl(geoService, localizationService);
     }
 
     @AfterAll
@@ -50,7 +50,7 @@ public class MessageSenderTests {
 
         Map<String, String> headers = new HashMap<String, String>();
         headers.put(MessageSenderImpl.IP_ADDRESS_HEADER, ip);
-        String result = sut.send(headers);
+        String result = messageSender.send(headers);
 
         Assertions.assertEquals(expected, result);
 
